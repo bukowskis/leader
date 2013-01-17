@@ -9,7 +9,7 @@ Say you want foreman to (among others) start mysql using your Procfile. What if 
 Add this to your Gemfile
 
 ```ruby
-gem 'leader'
+gem 'leader', github: 'halo/leader'
 ```
 
 ### Usage
