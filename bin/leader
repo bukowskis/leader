@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+$: << File.expand_path('../../lib', __FILE__)
+
+require 'leader'
+include Leader
+
+port = Options.unless_port
+command = ARGV.join(' ')
+
+if port && port_in_use?(port)
+  puts "I believe that #{command} is already running on port #{port}..."
+  loop { sleep 1 }  # Making foreman believe it's running
+end
+
+if command_exists?(ARGV.first)
+  puts "Starting #{command}..."
+  exec command  # Replaces this process entirely
+else
+  puts "I can't start #{command}."
+  abort  # Informing foreman about the failure
+end
