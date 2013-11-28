@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]
+then
+  echo "Usage: leader portnumber command"
+  exit 1
+fi
+
+first_run=1
+while :
+do
+    if [[ `lsof -i :$1` ]]
+    then
+      if [[ $first_run == 1 ]]
+      then
+        echo 'port already in use. I assume it is already running...'
+        first_run=0
+      fi
+    else
+      shift
+      echo $@
+      exec "$@"
+    fi
+    sleep 1
+done
+echo "done"
