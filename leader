@@ -9,7 +9,7 @@ fi
 first_run=1
 while :
 do
-    if [[ `lsof -i :$1` ]]
+    if [[ `lsof -i :$1 -sTCP:LISTEN` ]]
     then
       if [[ $first_run == 1 ]]
       then
