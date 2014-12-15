@@ -1,26 +1,18 @@
 #!/bin/bash
 
-if [ "$#" -lt 2 ]
-then
-  echo "Usage: leader portnumber command"
+if [ "$#" -lt 2 ]; then
+  echo
+  echo "  Usage:   leader PORT COMMAND"
+  echo "  Example: leader 8080 nginx"
+  echo
   exit 1
 fi
 
-first_run=1
-while :
-do
-    if [[ `lsof -i :$1 -sTCP:LISTEN` ]]
-    then
-      if [[ $first_run == 1 ]]
-      then
-        echo 'port already in use. I assume it is already running...'
-        first_run=0
-      fi
-    else
-      shift
-      echo $@
-      exec "$@"
-    fi
-    sleep 1
-done
-echo "done"
+if [[ `lsof -i :$1 -sTCP:LISTEN` ]]; then
+  echo "Leader detected port $1 already in use. Ignoring."
+  while :; do sleep 1; done
+else
+  shift
+  echo $@
+  exec "$@"
+fi
